@@ -17,7 +17,9 @@ final class ZoomChat
         $file = fopen($filePath, 'rb');
         while (!feof($file)){
             $line = fgets($file);
-            $this->addLine(ZoomChatLine::fromString($line));
+            if (!empty($line)) {
+                $this->addLine(ZoomChatLine::fromString($line));
+            }
         }
         fclose($file);
     }

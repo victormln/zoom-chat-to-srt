@@ -38,6 +38,7 @@ final class SrtFile
                         $zoomChatLine->message()
                     )
                 );
+                $this->counter++;
                 continue;
             }
 
