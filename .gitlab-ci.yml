@@ -27,7 +27,7 @@ deploy:
     - which rsync || ( apt-get update -y && apt-get install rsync -y )
   script:
     - ssh-add <(echo "$PRIVATE_KEY")
-    - rsync -rvzD -e "ssh -o StrictHostKeyChecking=no" --exclude='.git/' --exclude='.gitlab-ci.yml' ./ root@87.106.236.166:/var/www/zoom-chat-to-srt/
+    - rsync -rvzD -e "ssh -o StrictHostKeyChecking=no" --exclude='.git/' --exclude='.gitlab-ci.yml' ./ root@87.106.236.166:/var/www/victormln.com/zoom-chat-to-srt/
   environment: production
   only:
     - main
