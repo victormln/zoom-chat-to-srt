@@ -17,6 +17,7 @@ test:8_1:
 
 deploy:
   stage: deploy
+  image: php:8.1
   before_script:
     - bash .ci-cd/build-prod.sh > /dev/null
     - 'which ssh-agent || ( apt-get update -y && apt-get      install openssh-client -y)'
