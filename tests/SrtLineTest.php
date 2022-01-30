@@ -24,7 +24,7 @@ class SrtLineTest extends TestCase
 
         $this->assertEquals(
             '0
-00:00:00,000000 --> 00:00:05,000000
+00:00:00,000 --> 00:00:05,000
 Test message
 ',
             $srtLine->toString()

@@ -8,9 +8,9 @@ use Victormln\ZoomChatToSrt\ZoomChatConverter;
 
 class MainTest extends TestCase
 {
-    private const INPUT_PATH_OF_CHAT = '../chat.txt';
-    private const OUTPUT_PATH_OF_SRT = '../chat.srt';
-    private const EXPECTED_SRT_FILE = 'fixtures/expected_srt.srt';
+    private const INPUT_PATH_OF_CHAT = __DIR__ . '/' . '../chat.txt';
+    private const OUTPUT_PATH_OF_SRT = __DIR__ . '/' . '../chat.srt';
+    private const EXPECTED_SRT_FILE = __DIR__ . '/' . 'fixtures/expected_srt.srt';
 
     public function testGivenChatFileGeneratesValidSrtFile(): void
     {
