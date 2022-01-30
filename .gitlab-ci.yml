@@ -1,0 +1,27 @@
+stages:
+  - test
+  - deploy
+
+test:8_1:
+  before_script:
+    - bash .ci-cd/build.sh > /dev/null
+  image: php:8.1
+  stage: test
+  variables:
+    SRC_DIR: src
+  script:
+    - vendor/bin/phpunit -v --coverage-text --coverage-html=coverage --colors=never
+  artifacts:
+    paths:
+      - coverage
+
+pages:
+  stage: deploy
+  dependencies:
+    - test:8_1
+  script:
+    - mv coverage public/coverage
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
