@@ -27,8 +27,8 @@ deploy:
 
   script:
     - ssh-add <(echo "$PRIVATE_KEY")
-    - rsync -rvzD -e "ssh -o IdentitiesOnly=yes StrictHostKeyChecking=no gitlab" --exclude='.git/' --exclude='.gitlab-ci.yml' ./ root@87.106.236.166:/var/www/zoom-chat-to-srt/
-    - ssh -o IdentitiesOnly=yes StrictHostKeyChecking=no gitlab root@87.106.236.166 "composer install --working-dir=/var/www/zoom-chat-to-srt/"
+    - rsync -rvzD -e "ssh -o StrictHostKeyChecking=no" --exclude='.git/' --exclude='.gitlab-ci.yml' ./ root@87.106.236.166:/var/www/zoom-chat-to-srt/
+    - ssh -o StrictHostKeyChecking=no root@87.106.236.166 "composer install --working-dir=/var/www/zoom-chat-to-srt/"
   only:
     - main
 
