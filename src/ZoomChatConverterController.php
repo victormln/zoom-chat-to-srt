@@ -4,6 +4,8 @@ require_once(__DIR__ . '/' . '../vendor/autoload.php');
 
 use Victormln\ZoomChatToSrt\ZoomChat;
 use Victormln\ZoomChatToSrt\ZoomChatConverter;
+use Victormln\ZoomChatToSrt\ZoomConverterConfig;
+
 if (!isset($_FILES["fileToUpload"])) {
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
@@ -14,7 +16,19 @@ if ($_FILES["fileToUpload"]["size"] > 100000) {
 if (isset($_FILES["fileToUpload"])) {
     $outputFileName = '/tmp/zoom_' . random_int(10000000, 999999999) . '.srt';
     try {
-        (new ZoomChatConverter(new ZoomChat($_FILES["fileToUpload"]["tmp_name"])))
+        $defaultNumberOfSeconds = 5;
+        $overlapSubtitles = true;
+        if (isset($_POST['number_of_seconds_duration'])) {
+            $defaultNumberOfSeconds = $_POST['number_of_seconds_duration'];
+        }
+        if (isset($_POST['overlap_subtitles'])) {
+            $overlapSubtitles = $_POST['overlap_subtitles'];
+        }
+
+        (new ZoomChatConverter(
+            new ZoomChat($_FILES["fileToUpload"]["tmp_name"]),
+            new ZoomConverterConfig($defaultNumberOfSeconds, $overlapSubtitles)
+        ))
             ->toSrt($outputFileName);
     } catch (Throwable $exception) {
         header('Location: ' . $_SERVER['HTTP_REFERER']);

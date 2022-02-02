@@ -9,7 +9,6 @@ final class SrtFile
 {
     private const DEFAULT_FORMAT = 'H:i:s';
     private const DATE_INTERVAL_FORMAT = '%H:%I:%S';
-    private const ADD_5_SECONDS = 'PT5S';
     private array $lines;
 
     public function __construct(private int $counter = 1)
@@ -17,14 +16,14 @@ final class SrtFile
         $this->lines = [];
     }
 
-    public function fromZoomChat(ZoomChat $zoomChat): void
+    public function fromZoomChat(ZoomChat $zoomChat, ZoomConverterConfig $zoomConverterConfig): void
     {
         $previousStartDatetime = null;
         $startDatetime = DateTimeImmutable::createFromFormat(
             self::DEFAULT_FORMAT,
             '00:00:00'
         );
-        $endDatetime = $startDatetime->add(new DateInterval(self::ADD_5_SECONDS));
+        $endDatetime = $startDatetime->add(new DateInterval($this->formatInterval($zoomConverterConfig->numberOfSecondsBetweenEachSubtitle())));
 
         foreach ($zoomChat->lines() as $zoomChatLine) {
             /** @var ZoomChatLine $zoomChatLine */
@@ -48,7 +47,7 @@ final class SrtFile
                     ->diff($zoomChatLine->datetimeOfLine())
                     ->format(self::DATE_INTERVAL_FORMAT)
             );
-            $endDatetime = $startDatetime->add(new DateInterval(self::ADD_5_SECONDS));
+            $endDatetime = $startDatetime->add(new DateInterval($this->formatInterval($zoomConverterConfig->numberOfSecondsBetweenEachSubtitle())));
 
             $this->addLine(
                 new SrtLine(
@@ -70,6 +69,11 @@ final class SrtFile
     public function lines(): array
     {
         return $this->lines;
+    }
+
+    private function formatInterval(int $numberOfSeconds): string
+    {
+        return sprintf('PT%sS', $numberOfSeconds);
     }
 
     public function toString(): string

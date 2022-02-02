@@ -5,6 +5,7 @@ namespace Victormln\ZoomChatToSrt\Tests;
 use PHPUnit\Framework\TestCase;
 use Victormln\ZoomChatToSrt\ZoomChat;
 use Victormln\ZoomChatToSrt\ZoomChatConverter;
+use Victormln\ZoomChatToSrt\ZoomConverterConfig;
 
 class MainTest extends TestCase
 {
@@ -15,7 +16,8 @@ class MainTest extends TestCase
     public function testGivenChatFileGeneratesValidSrtFile(): void
     {
         $zoomChatConverter = (new ZoomChatConverter(
-            new ZoomChat(self::INPUT_PATH_OF_CHAT)
+            new ZoomChat(self::INPUT_PATH_OF_CHAT),
+            new ZoomConverterConfig(5, true)
         ));
         $zoomChatConverter->toSrt(self::OUTPUT_PATH_OF_SRT);
 
