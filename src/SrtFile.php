@@ -23,7 +23,10 @@ final class SrtFile
             self::DEFAULT_FORMAT,
             '00:00:00'
         );
-        $endDatetime = $startDatetime->add(new DateInterval($this->formatInterval($zoomConverterConfig->numberOfSecondsBetweenEachSubtitle())));
+        $endDatetime = $startDatetime
+            ->add(
+                new DateInterval($this->formatInterval($zoomConverterConfig->numberOfSecondsBetweenEachSubtitle()))
+            );
 
         foreach ($zoomChat->lines() as $zoomChatLine) {
             /** @var ZoomChatLine $zoomChatLine */
@@ -47,7 +50,14 @@ final class SrtFile
                     ->diff($zoomChatLine->datetimeOfLine())
                     ->format(self::DATE_INTERVAL_FORMAT)
             );
-            $endDatetime = $startDatetime->add(new DateInterval($this->formatInterval($zoomConverterConfig->numberOfSecondsBetweenEachSubtitle())));
+
+            if (!$zoomConverterConfig->hasToOverlapSubtitles() && $startDatetime < $endDatetime) {
+                $startDatetime = $endDatetime;
+            }
+            $endDatetime = $startDatetime
+                ->add(
+                    new DateInterval($this->formatInterval($zoomConverterConfig->numberOfSecondsBetweenEachSubtitle()))
+                );
 
             $this->addLine(
                 new SrtLine(
