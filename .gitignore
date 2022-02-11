@@ -3,3 +3,4 @@
 chat.srt
 .idea
 .phpunit.cache/
+.gitlab-ci.yml
